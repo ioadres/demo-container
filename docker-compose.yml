@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  offer.api:
+    image: ${REGISTRY:-computrabajo}/offer.api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Offer/Offer.Api/Dockerfile 
+
+ 
