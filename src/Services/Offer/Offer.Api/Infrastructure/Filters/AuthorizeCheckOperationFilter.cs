@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AreaCandidatoCore.Services.Offer.API.Infrastructure.Filters
+namespace DemoCore.Services.Offer.API.Infrastructure.Filters
 {
     public class AuthorizeCheckOperationFilter : IOperationFilter
     {

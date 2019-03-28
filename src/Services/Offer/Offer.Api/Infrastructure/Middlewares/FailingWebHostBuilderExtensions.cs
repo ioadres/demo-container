@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 
 
-namespace AreaCandidatoCore.Services.Offer.API.Infrastructure.Middlewares
+namespace DemoCore.Services.Offer.API.Infrastructure.Middlewares
 {
     public static class WebHostBuildertExtensions
     {

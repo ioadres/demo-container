@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AreaCandidatoCore.Services.Offer.API.Controllers
+namespace DemoCore.Services.Offer.API.Controllers
 {
 
     public class HomeController : Controller

@@ -1,4 +1,4 @@
-﻿using AreaCandidatoCore.Services.Offer.API.Infrastructure.Exceptions;
+﻿using DemoCore.Services.Offer.API.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AreaCandidatoCore.Services.Offer.API.Infrastructure.Filters
+namespace DemoCore.Services.Offer.API.Infrastructure.Filters
 {
     public class ValidateModelStateFilter : ActionFilterAttribute
     {

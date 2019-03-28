@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using AreaCandidatoCore.Services.Offer.API.Infrastructure.Exceptions;
+using DemoCore.Services.Offer.API.Infrastructure.Exceptions;
 using System;
 
-namespace AreaCandidatoCore.Services.Offer.API.Infrastructure.Middlewares
+namespace DemoCore.Services.Offer.API.Infrastructure.Middlewares
 {
     public class FailingStartupFilter : IStartupFilter
     {

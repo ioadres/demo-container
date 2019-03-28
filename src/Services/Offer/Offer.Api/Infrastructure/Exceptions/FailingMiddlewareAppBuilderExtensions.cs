@@ -1,11 +1,11 @@
-﻿using AreaCandidatoCore.Services.Offer.API.Infrastructure.Middlewares;
+﻿using DemoCore.Services.Offer.API.Infrastructure.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AreaCandidatoCore.Services.Offer.API.Infrastructure.Exceptions
+namespace DemoCore.Services.Offer.API.Infrastructure.Exceptions
 {
     public static class FailingMiddlewareAppBuilderExtensions
     {

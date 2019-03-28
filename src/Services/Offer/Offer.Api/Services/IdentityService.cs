@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AreaCandidatoCore.Services.Offer.API.Services
+namespace DemoCore.Services.Offer.API.Services
 {
     public class IdentityService : IIdentityService
     {

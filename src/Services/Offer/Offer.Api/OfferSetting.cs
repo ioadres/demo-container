@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AreaCandidatoCore.Services.Offer.API
+namespace DemoCore.Services.Offer.API
 {
     public class OfferSetting
     {

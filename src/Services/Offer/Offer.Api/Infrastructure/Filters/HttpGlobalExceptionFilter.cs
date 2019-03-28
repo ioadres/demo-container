@@ -1,5 +1,5 @@
-﻿using AreaCandidatoCore.Services.Offer.API.Infrastructure.ActionResults;
-using AreaCandidatoCore.Services.Offer.API.Infrastructure.Exceptions;
+﻿using DemoCore.Services.Offer.API.Infrastructure.ActionResults;
+using DemoCore.Services.Offer.API.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace AreaCandidatoCore.Services.Offer.API.Infrastructure.Filters
+namespace DemoCore.Services.Offer.API.Infrastructure.Filters
 {
     public partial class HttpGlobalExceptionFilter : IExceptionFilter
     {

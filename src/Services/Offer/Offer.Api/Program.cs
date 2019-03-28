@@ -1,5 +1,5 @@
 ﻿
-using AreaCandidatoCore.Services.Offer.API.Infrastructure.Middlewares;
+using DemoCore.Services.Offer.API.Infrastructure.Middlewares;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,7 +9,7 @@ using Serilog;
 using System;
 using System.IO;
 
-namespace AreaCandidatoCore.Services.Offer.API
+namespace DemoCore.Services.Offer.API
 {
     public class Program
     {
