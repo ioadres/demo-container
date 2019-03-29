@@ -40,21 +40,14 @@ namespace DemoCore.Services.Offer.API
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
-            services.AddMvc(options =>
-            {
-                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-                options.Filters.Add(typeof(ValidateModelStateFilter));
+            services
+                .AddCustomMvc(Configuration)
+                .AddCustomAuth(Configuration)
+                .AddCustomHealthCheck(Configuration)
+                .AddCustomConfiguration(Configuration)
+                .AddCustomSwaggerGen(Configuration)
+                .AddCustomDependency();
 
-            })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddControllersAsServices();
-
-            ConfigureAuthService(services);
-
-            services.AddCustomHealthCheck(Configuration);
-
-            services.Configure<OfferSetting>(Configuration);
 
             //By connecting here we are making sure that our service
             //cannot start until redis is ready. This might slow down startup,
@@ -70,76 +63,14 @@ namespace DemoCore.Services.Offer.API
                 configuration.ResolveDns = true;
 
                 return ConnectionMultiplexer.Connect(configuration);
-            });          
-
-            services.AddSwaggerGen(options =>
-            {
-                options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1", new Info
-                {
-                    Title = "Offer HTTP API",
-                    Version = "v1",
-                    Description = "The Basket Service HTTP API",
-                    TermsOfService = "Terms Of Service"
-                });
-
-                options.AddSecurityDefinition("oauth2", new OAuth2Scheme
-                {
-                    Type = "oauth2",
-                    Flow = "implicit",
-                    AuthorizationUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize",
-                    TokenUrl = $"{Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
-                    Scopes = new Dictionary<string, string>()
-                    {
-                        { "offer", "Offer API" }
-                    }
-                });
-
-                options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
 
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder
-                    .SetIsOriginAllowed((host) => true)
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
-            });
-
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            //services.AddTransient<IBasketRepository, RedisBasketRepository>();
-            services.AddTransient<IIdentityService, IdentityService>();
-
-            services.AddOptions();
-
+            //### Autofac builder
             var container = new ContainerBuilder();
             container.Populate(services);
 
 
             return new AutofacServiceProvider(container.Build());
-        }
-
-        private void ConfigureAuthService(IServiceCollection services)
-        {
-            // prevent from mapping "sub" claim to nameidentifier.
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
-            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
-            }).AddJwtBearer(options =>
-            {
-                options.Authority = identityUrl;
-                options.RequireHttpsMetadata = false;
-                options.Audience = "offer";
-            });
         }
 
         protected virtual void ConfigureAuth(IApplicationBuilder app)
@@ -187,45 +118,7 @@ namespace DemoCore.Services.Offer.API
                    c.OAuthAppName("Offer Swagger UI");
                });
 
-            //ConfigureEventBus(app);
-
         }       
-    }
-
-    public static class CustomExtensionMethods
-    {
-        public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services, IConfiguration configuration)
-        {
-            var hcBuilder = services.AddHealthChecks();
-
-            hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
-
-            hcBuilder
-                .AddRedis(
-                    configuration["ConnectionString"],
-                    name: "redis-check",
-                    tags: new string[] { "redis" });
-
-            if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
-            {
-                hcBuilder
-                    .AddAzureServiceBusTopic(
-                        configuration["EventBusConnection"],
-                        topicName: "eshop_event_bus",
-                        name: "basket-servicebus-check",
-                        tags: new string[] { "servicebus" });
-            }
-            else
-            {
-                hcBuilder
-                    .AddRabbitMQ(
-                        $"amqp://{configuration["EventBusConnection"]}",
-                        name: "basket-rabbitmqbus-check",
-                        tags: new string[] { "rabbitmqbus" });
-            }
-
-            return services;
-        }
     }
 
 }

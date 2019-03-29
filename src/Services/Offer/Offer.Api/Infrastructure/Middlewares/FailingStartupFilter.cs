@@ -8,6 +8,7 @@ namespace DemoCore.Services.Offer.API.Infrastructure.Middlewares
     public class FailingStartupFilter : IStartupFilter
     {
         private readonly Action<FailingOptions> _options;
+
         public FailingStartupFilter(Action<FailingOptions> optionsAction)
         {
             _options = optionsAction;
