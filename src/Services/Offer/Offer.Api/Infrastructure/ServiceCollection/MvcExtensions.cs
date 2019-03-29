@@ -30,7 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services;
         }
-        4
+
 
         public static IServiceCollection AddCustomCors(this IServiceCollection services)
         {

@@ -48,7 +48,6 @@ namespace DemoCore.Services.Offer.API
                 .AddCustomSwaggerGen(Configuration)
                 .AddCustomDependency();
 
-
             //By connecting here we are making sure that our service
             //cannot start until redis is ready. This might slow down startup,
             //but given that there is a delay on resolving the ip address
