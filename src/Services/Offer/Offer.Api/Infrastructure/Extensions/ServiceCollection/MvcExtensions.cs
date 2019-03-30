@@ -21,12 +21,9 @@ namespace Microsoft.Extensions.DependencyInjection
             })
             .AddApiExplorer()
             .AddAuthorization()
-            .AddFormatterMappings()
             .AddJsonFormatters()
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
             .AddControllersAsServices();
-
-            services.AddCustomCors();
 
             return services;
         }

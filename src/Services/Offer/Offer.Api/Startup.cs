@@ -25,7 +25,7 @@ using Autofac;
 using DemoCore.Services.Offer.API.Services;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using HealthChecks.UI.Client;
-using Offer.API.Infrastructure.Middlewares;
+using DemoCore.Services.Offer.API.Infrastructure.Middlewares.Failing;
 
 namespace DemoCore.Services.Offer.API
 {
@@ -42,27 +42,13 @@ namespace DemoCore.Services.Offer.API
         {
             services
                 .AddCustomMvc(Configuration)
-                .AddCustomAuth(Configuration)
-                .AddCustomHealthCheck(Configuration)
+                .AddCustomCors()
                 .AddCustomConfiguration(Configuration)
-                .AddCustomSwaggerGen(Configuration)
-                .AddCustomDependency();
-
-            //By connecting here we are making sure that our service
-            //cannot start until redis is ready. This might slow down startup,
-            //but given that there is a delay on resolving the ip address
-            //and then creating the connection it seems reasonable to move
-            //that cost to startup instead of having the first request pay the
-            //penalty.
-            services.AddSingleton<ConnectionMultiplexer>(sp =>
-            {
-                var settings = sp.GetRequiredService<IOptions<OfferSetting>>().Value;
-                var configuration = ConfigurationOptions.Parse(settings.ConnectionString, true);
-
-                configuration.ResolveDns = true;
-
-                return ConnectionMultiplexer.Connect(configuration);
-            });
+                .AddCustomAuthentication(Configuration)
+                .AddCustomSwagger(Configuration)
+                .AddCustomHealthCheck(Configuration)
+                .AddCustomDependency()
+                .AddCustomRedis();
 
             //### Autofac builder
             var container = new ContainerBuilder();
@@ -70,16 +56,6 @@ namespace DemoCore.Services.Offer.API
 
 
             return new AutofacServiceProvider(container.Build());
-        }
-
-        protected virtual void ConfigureAuth(IApplicationBuilder app)
-        {
-            if (Configuration.GetValue<bool>("UseLoadTest"))
-            {
-                app.UseMiddleware<ByPassAuthMiddleware>();
-            }
-
-            app.UseAuthentication();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -91,31 +67,13 @@ namespace DemoCore.Services.Offer.API
                 app.UsePathBase(pathBase);
             }
 
-            app.UseHealthChecks("/hc", new HealthCheckOptions()
-            {
-                Predicate = _ => true,
-                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-            });
-
-            app.UseHealthChecks("/liveness", new HealthCheckOptions
-            {
-                Predicate = r => r.Name.Contains("self")
-            });
-
-            app.UseStaticFiles();
-            app.UseCors("CorsPolicy");
-
-            ConfigureAuth(app);
-
-            app.UseMvcWithDefaultRoute();
-
-            app.UseSwagger()
-               .UseSwaggerUI(c =>
-               {
-                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Offer.API V1");
-                   c.OAuthClientId("offerswaggerui");
-                   c.OAuthAppName("Offer Swagger UI");
-               });
+            app
+                .UseCustomHealth()
+                .UseStaticFiles()
+                .UseCors("CorsPolicy")
+                .UseAuthentication()
+                .UseMvcWithDefaultRoute()
+                .UseCustomSwagger(Configuration);
 
         }       
     }

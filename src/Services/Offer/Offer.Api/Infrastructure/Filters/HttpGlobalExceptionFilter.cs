@@ -41,7 +41,7 @@ namespace DemoCore.Services.Offer.API.Infrastructure.Filters
             }
             else
             {
-                var json = new JsonErrorResponse
+                var json = new JsonErrorDeveloperResponse
                 {
                     Messages = new[] { "An error occurred. Try it again." }
                 };

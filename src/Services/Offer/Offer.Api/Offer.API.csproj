@@ -24,6 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Infrastructure\ServiceCollection\" />
+    <Folder Include="Infrastructure\Extensions\" />
+    <Folder Include="Infrastructure\Extensions\ServiceCollection\" />
+    <Folder Include="Infrastructure\Extensions\ApplicationBuilderExtensions\" />
+    <Folder Include="Infrastructure\Middlewares\Failing\" />
   </ItemGroup>
 </Project>

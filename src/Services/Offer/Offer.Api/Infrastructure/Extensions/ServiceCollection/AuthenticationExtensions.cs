@@ -1,14 +1,13 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
-using DemoCore.Services.Offer.API;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class AuthExtensions
+    public static class AuthenticationExtensions
     {
-        public static IServiceCollection AddCustomAuth(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCustomAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             // prevent from mapping "sub" claim to nameidentifier.
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DemoCore.Services.Offer.API.Infrastructure.Middlewares
+namespace DemoCore.Services.Offer.API.Infrastructure.Middlewares.Failing
 {
     public class FailingMiddleware
     {

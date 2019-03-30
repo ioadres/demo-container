@@ -14,7 +14,6 @@ namespace Microsoft.Extensions.DependencyInjection
             //services.AddTransient<IBasketRepository, RedisBasketRepository>();
             services.AddTransient<IIdentityService, IdentityService>();
 
-
             return services;
         }
     }

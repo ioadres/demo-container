@@ -8,7 +8,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class SwaggerExtensions
     {
-        public static IServiceCollection AddCustomSwaggerGen(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCustomSwagger(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSwaggerGen(options =>
             {
@@ -17,7 +17,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     Title = "Offer HTTP API",
                     Version = "v1",
-                    Description = "The Basket Service HTTP API",
+                    Description = "The Offer Service HTTP API",
                     TermsOfService = "Terms Of Service"
                 });
 

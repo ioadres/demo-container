@@ -1,5 +1,4 @@
-﻿
-using DemoCore.Services.Offer.API.Infrastructure.Middlewares;
+﻿using DemoCore.Services.Offer.API.Infrastructure.Middlewares.Failing;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

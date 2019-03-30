@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DemoCore.Services.Offer.API.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Offer.Api.Controllers
@@ -15,6 +16,18 @@ namespace Offer.Api.Controllers
         public ActionResult<IEnumerable<string>> Get()
         {
             return new string[] { "value1", "value2" };
+        }
+
+        [HttpGet("GetError")]
+        public ActionResult<IEnumerable<string>> GetError()
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpGet("GetErrorCustom")]
+        public ActionResult<IEnumerable<string>> GetErrorCustom()
+        {
+            throw new OfferDomainException("Error manual");
         }
 
         // GET api/values/5
