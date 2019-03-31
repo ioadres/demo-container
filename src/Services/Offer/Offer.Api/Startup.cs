@@ -1,31 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Threading.Tasks;
-using DemoCore.Services.Offer.API.Infrastructure.Filters;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using RabbitMQ.Client;
-using StackExchange.Redis;
-
 using Autofac.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
-using Microsoft.AspNetCore.Http;
 using Autofac;
-using DemoCore.Services.Offer.API.Services;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using HealthChecks.UI.Client;
-using DemoCore.Services.Offer.API.Infrastructure.Middlewares.Failing;
+using Offer.API.Infrastructure.AutofacModules;
+using Offer.API.Infrastructure;
+using Microsoft.Extensions.Options;
 
 namespace DemoCore.Services.Offer.API
 {
@@ -41,7 +23,7 @@ namespace DemoCore.Services.Offer.API
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services
-                .AddCustomMvc(Configuration)
+                .AddCustomMvc()
                 .AddCustomCors()
                 .AddCustomConfiguration(Configuration)
                 .AddCustomAuthentication(Configuration)
@@ -54,26 +36,27 @@ namespace DemoCore.Services.Offer.API
             var container = new ContainerBuilder();
             container.Populate(services);
 
+            container.RegisterModule(new ApplicationModule());
 
             return new AutofacServiceProvider(container.Build());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptions<OfferSetting> settings)
         {
-            var pathBase = Configuration["PATH_BASE"];
+            var pathBase = Configuration["PATH_BASE"]; // Deploy path 
             if (!string.IsNullOrEmpty(pathBase))
             {
                 app.UsePathBase(pathBase);
             }
 
             app
-                .UseCustomHealth()
+                .UseCustomHealth(settings.Value)
                 .UseStaticFiles()
-                .UseCors("CorsPolicy")
+                .UseCors(InfrastructureConst.GeneralCorsPolicy)
                 .UseAuthentication()
                 .UseMvcWithDefaultRoute()
-                .UseCustomSwagger(Configuration);
+                .UseCustomSwagger(pathBase);
 
         }       
     }

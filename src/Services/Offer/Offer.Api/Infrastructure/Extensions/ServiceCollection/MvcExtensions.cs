@@ -6,12 +6,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Offer.API.Infrastructure;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class MvcExtension
     {
-        public static IServiceCollection AddCustomMvc(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCustomMvc(this IServiceCollection services)
         {
             services.AddMvcCore(options =>
             {
@@ -33,7 +34,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy",
+                options.AddPolicy(InfrastructureConst.GeneralCorsPolicy,
                     builder => builder
                     .SetIsOriginAllowed((host) => true)
                     .AllowAnyMethod()

@@ -11,7 +11,6 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddCustomDependency(this IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            //services.AddTransient<IBasketRepository, RedisBasketRepository>();
             services.AddTransient<IIdentityService, IdentityService>();
 
             return services;

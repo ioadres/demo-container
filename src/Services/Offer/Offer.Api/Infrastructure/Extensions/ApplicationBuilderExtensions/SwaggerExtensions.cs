@@ -8,9 +8,8 @@ namespace Microsoft.AspNetCore.Builder
 {
     public static class SwaggerExtensions
     {
-        public static IApplicationBuilder UseCustomSwagger(this IApplicationBuilder app, IConfiguration configuration)
+        public static IApplicationBuilder UseCustomSwagger(this IApplicationBuilder app, string pathBase)
         {
-            var pathBase = configuration["PATH_BASE"];
             app.UseSwagger()
                .UseSwaggerUI(c =>
                {

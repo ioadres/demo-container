@@ -12,30 +12,10 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             var hcBuilder = services.AddHealthChecks();
 
-            hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
-
-            hcBuilder
-                .AddRedis(
-                    configuration["ConnectionString"],
-                    name: "redis-check",
-                    tags: new string[] { "redis" });
-
-            if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
+            var selfLiveActive = configuration.GetValue<bool>("SelfLiveHealth:Active");
+            if (selfLiveActive)
             {
-                hcBuilder
-                    .AddAzureServiceBusTopic(
-                        configuration["EventBusConnection"],
-                        topicName: "eshop_event_bus",
-                        name: "basket-servicebus-check",
-                        tags: new string[] { "servicebus" });
-            }
-            else
-            {
-                hcBuilder
-                    .AddRabbitMQ(
-                        $"amqp://{configuration["EventBusConnection"]}",
-                        name: "basket-rabbitmqbus-check",
-                        tags: new string[] { "rabbitmqbus" });
+                hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
             }
 
             return services;

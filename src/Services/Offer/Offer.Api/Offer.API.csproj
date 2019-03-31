@@ -28,5 +28,6 @@
     <Folder Include="Infrastructure\Extensions\ServiceCollection\" />
     <Folder Include="Infrastructure\Extensions\ApplicationBuilderExtensions\" />
     <Folder Include="Infrastructure\Middlewares\Failing\" />
+    <Folder Include="Infrastructure\AutofacModules\" />
   </ItemGroup>
 </Project>

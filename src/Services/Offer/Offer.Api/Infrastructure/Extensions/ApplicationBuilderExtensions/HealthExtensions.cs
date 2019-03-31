@@ -1,4 +1,5 @@
 ﻿using System;
+using DemoCore.Services.Offer.API;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -7,18 +8,23 @@ namespace Microsoft.AspNetCore.Builder
 {
     public static class HealthExtensions
     {
-        public static IApplicationBuilder UseCustomHealth(this IApplicationBuilder app)
+        public static IApplicationBuilder UseCustomHealth(this IApplicationBuilder app, OfferSetting setting)
         {
-            app.UseHealthChecks("/hc", new HealthCheckOptions()
+            if (setting.SelfUiHealth.Active)
             {
-                Predicate = _ => true,
-                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-            });
-
-            app.UseHealthChecks("/liveness", new HealthCheckOptions
+                app.UseHealthChecks(setting.SelfUiHealth.Url, new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+            }
+            if (setting.SelfLiveHealth.Active)
             {
-                Predicate = r => r.Name.Contains("self")
-            });
+                app.UseHealthChecks(setting.SelfLiveHealth.Url, new HealthCheckOptions
+                {
+                    Predicate = r => r.Name.Contains("self")
+                });
+            }
 
             return app;
         }
