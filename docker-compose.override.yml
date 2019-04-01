@@ -8,11 +8,15 @@ version: '3.4'
 
 services: 
 
+  offer.data:
+    ports:
+      - "6379:6379"
+      
   offer.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-    
+      - ConnectionString=${DEMO_AZURE_REDIS_OFFER_DB:-offer.data}
       - Identity:IdentityUrl=http://identity.api              #Local: You need to open your local dev-machine firewall at range 5100-5110.
       - Identity:IdentityUrlExternal=http://${DEMO_EXTERNAL_DNS_NAME_OR_IP}:5105        
     ports:

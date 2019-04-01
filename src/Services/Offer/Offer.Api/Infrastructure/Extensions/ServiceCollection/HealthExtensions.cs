@@ -18,6 +18,16 @@ namespace Microsoft.Extensions.DependencyInjection
                 hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
             }
 
+            var rediHealthActive = configuration.GetValue<bool>("RedisHealthActive:Active");
+            if (rediHealthActive)
+            {
+                hcBuilder
+                   .AddRedis(
+                       configuration["ConnectionString"],
+                       name: "redis-check",
+                       tags: new string[] { "redis" });
+            }
+
             return services;
         }
     }

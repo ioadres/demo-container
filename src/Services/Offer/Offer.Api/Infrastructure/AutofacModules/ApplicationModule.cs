@@ -1,5 +1,6 @@
 ﻿using System;
 using Autofac;
+using Offer.API.Module.Offer;
 
 namespace Offer.API.Infrastructure.AutofacModules
 {
@@ -7,6 +8,8 @@ namespace Offer.API.Infrastructure.AutofacModules
     {
         protected override void Load(ContainerBuilder builder)
         {
+
+            builder.RegisterType<OfferRedisRepository>().As<IOfferRepository>().InstancePerLifetimeScope();
         }
     }
 }
