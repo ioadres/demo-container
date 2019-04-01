@@ -25,8 +25,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     Type = "oauth2",
                     Flow = "implicit",
-                    AuthorizationUrl = $"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize",
-                    TokenUrl = $"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token",
+                    AuthorizationUrl = $"{configuration.GetValue<string>("Identity:IdentityUrlExternal")}/connect/authorize",
+                    TokenUrl = $"{configuration.GetValue<string>("Identity:IdentityUrlExternal")}/connect/token",
                     Scopes = new Dictionary<string, string>()
                     {
                         { "offer", "Offer API" }

@@ -12,7 +12,8 @@ namespace Microsoft.Extensions.DependencyInjection
             // prevent from mapping "sub" claim to nameidentifier.
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            var identityUrl = configuration.GetValue<string>("IdentityUrl");
+            var identityUrl = configuration.GetValue<string>("Identity:IdentityUrl");
+            var audience = configuration.GetValue<string>("Identity:Audience");
 
             services.AddAuthentication(options =>
             {
@@ -23,7 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 options.Authority = identityUrl;
                 options.RequireHttpsMetadata = false;
-                options.Audience = "offer";
+                options.Audience = audience;
             });
 
             return services;
