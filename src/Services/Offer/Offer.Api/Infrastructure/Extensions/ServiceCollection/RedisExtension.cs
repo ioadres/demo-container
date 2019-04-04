@@ -22,6 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 var configurationRedis = ConfigurationOptions.Parse(settings.ConnectionString, true);
 
                 configurationRedis.ResolveDns = true;
+                configurationRedis.AbortOnConnectFail = false;
 
                 return ConnectionMultiplexer.Connect(configurationRedis);
             });

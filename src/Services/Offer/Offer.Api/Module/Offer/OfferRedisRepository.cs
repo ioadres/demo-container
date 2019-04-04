@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DemoCore.Services.Offer.API.Infrastructure.Exceptions;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Offer.API.Common;
 using StackExchange.Redis;
 
 namespace Offer.API.Module.Offer
@@ -33,28 +34,23 @@ namespace Offer.API.Module.Offer
 
         public async Task<OfferModel> GetOfferAsync(string offerId)
         {
-            var data = await _database.StringGetAsync(offerId);
-
-            if (data.IsNullOrEmpty)
+            OfferModel result = null;
+            var key = OfferKeyCache.OfferKey(offerId);
+            if (_database.KeyExists(key))
             {
-                return null;
+                var data = await _database.StringGetAsync(key);
+                result = JsonConvert.DeserializeObject<OfferModel>(data);
             }
 
-            return JsonConvert.DeserializeObject<OfferModel>(data);
+            return result;
         }
 
         public async Task<bool> AddOfferAsync(OfferModel offerModel)
         {
-            var response = Task.FromResult(false);
-            var data = await _database.StringGetAsync(offerModel.Id.ToString());
+            var objectJson = JsonConvert.SerializeObject(offerModel);
+            var result = await _database.StringSetAsync(OfferKeyCache.OfferKey(offerModel.Id.ToString()), objectJson);
 
-            if (data.IsNullOrEmpty)
-            {
-                var json = JsonConvert.SerializeObject(offerModel);
-                response = _database.StringSetAsync(offerModel.Id.ToString(), json);
-            }
-
-            return await response;
+            return result;
         }
 
         private IServer GetServer()

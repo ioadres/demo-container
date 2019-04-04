@@ -31,5 +31,6 @@
     <Folder Include="Infrastructure\AutofacModules\" />
     <Folder Include="Module\" />
     <Folder Include="Module\Offer\" />
+    <Folder Include="Common\" />
   </ItemGroup>
 </Project>

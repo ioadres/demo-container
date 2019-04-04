@@ -21,8 +21,9 @@ namespace Offer.Api.Controllers
         }
 
         // GET api/offer
+        [Route("")]
         [HttpGet]
-        public ActionResult<IEnumerable<OfferModel>> Get()
+        public ActionResult<IEnumerable<OfferModel>> GetAll()
         {
             return Ok(_offerRepository.GetAllOffer());
         }
@@ -50,7 +51,6 @@ namespace Offer.Api.Controllers
 
         // POST api/offer
         [HttpPost]
-        [ProducesResponseType((int)HttpStatusCode.Conflict)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(OfferModel), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<bool>> Post([FromBody] OfferModel offerModel)
@@ -60,11 +60,9 @@ namespace Offer.Api.Controllers
                 return BadRequest();
             }
             var response = await _offerRepository.AddOfferAsync(offerModel);
-            if(response)
-            {
-                return response;
-            }
-            return Conflict("La oferta enviada ya existe");
+
+            return response;
+
         }       
     }
 }
